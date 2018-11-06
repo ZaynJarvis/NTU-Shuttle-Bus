@@ -1,6 +1,9 @@
+import 'package:bus/models/Bus.dart';
+
 class BusLocation {
   String id;
+  Bus bus;
   double latitude;
   double longitude;
-  BusLocation({this.id, this.latitude, this.longitude});
+  BusLocation({this.bus, this.latitude, this.longitude});
 }

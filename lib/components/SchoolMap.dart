@@ -12,28 +12,55 @@ import 'package:redux/redux.dart';
 import 'package:bus/models/AppState.dart';
 import 'package:bus/models/Bus.dart';
 
-class SchoolMap extends StatelessWidget {
+class SchoolMap extends StatefulWidget {
+  @override
+  SchoolMapState createState() {
+    return new SchoolMapState();
+  }
+}
+
+class SchoolMapState extends State<SchoolMap> {
+  @override
+  initState() {
+    super.initState();
+    Timer.periodic(new Duration(seconds: 30), (t) {
+      // setState(() {});
+    });
+  }
+
   Map _findLocation(Map info) {
     return {
       'lat': info['Latitude'],
-      'long': info['Longitude'],
+      'lon': info['Longitude'],
       'arrive_time': info['EstimatedArrival'],
     };
   }
 
-  Future<List<Map>> _getComingBus(busID) async {
-    Map<String, String> searchStop = {"199": "27199", "179": "27261"};
+  Future<List<Map>> _getComingBus(bus) async {
+    final String colorBusAPI =
+        'https://baseride.com/routes/apigeo/routevariantvehicle/${bus.id}/?format=json';
+
     final String busAPI =
-        'http://datamall2.mytransport.sg/ltaodataservice/BusArrivalv2?BusStopCode=${searchStop[busID]}&ServiceNo=$busID';
-    final busInfo = await http
-        .get(Uri.encodeFull(busAPI), headers: {"AccountKey": GOVDATA_TOKEN});
-    List buses = jsonDecode(busInfo.body)['Services'];
-    if (buses.isNotEmpty) {
-      return [
-        _findLocation(buses[0]['NextBus']),
-        _findLocation(buses[0]['NextBus2']),
-        _findLocation(buses[0]['NextBus3'])
-      ];
+        'http://datamall2.mytransport.sg/ltaodataservice/BusArrivalv2?BusStopCode=${bus.id}&ServiceNo=${bus.name}';
+    if (bus.isText) {
+      final busInfo = await http
+          .get(Uri.encodeFull(busAPI), headers: {"AccountKey": GOVDATA_TOKEN});
+      List buses = jsonDecode(busInfo.body)['Services'];
+      if (buses.isNotEmpty) {
+        return [
+          _findLocation(buses[0]['NextBus']),
+          _findLocation(buses[0]['NextBus2']),
+          _findLocation(buses[0]['NextBus3'])
+        ];
+      }
+    } else {
+      final busInfo = await http.get(Uri.encodeFull(colorBusAPI));
+      List buses = jsonDecode(busInfo.body)['vehicles'];
+      if (buses.isNotEmpty) {
+        return buses.map((bus) {
+          return {'lat': bus['lat'], 'lon': bus['lon']};
+        }).toList();
+      }
     }
     return [];
   }
@@ -41,12 +68,12 @@ class SchoolMap extends StatelessWidget {
   Future<Map> _getMarkers(List<Bus> searchBuses) async {
     List<Map> markers = [];
     await Future.forEach(searchBuses, (Bus searchBusItem) async {
-      List<Map> busInfoAll = await _getComingBus(searchBusItem.id);
+      List<Map> busInfoAll = await _getComingBus(searchBusItem);
       busInfoAll.forEach((busInfo) {
-        if (busInfo['lat'] != '0')
+        if (busInfo['lat'] != '0' && busInfo['lat'] != '')
           markers.add({
             'lat': busInfo['lat'],
-            'long': busInfo['long'],
+            'lon': busInfo['lon'],
             'color': searchBusItem.color,
           });
       });
@@ -62,7 +89,7 @@ class SchoolMap extends StatelessWidget {
                 height: 20.0,
                 point: LatLng(
                   double.parse(markerItem['lat']),
-                  double.parse(markerItem['long']),
+                  double.parse(markerItem['lon']),
                 ),
                 builder: (ctx) => Container(
                       child: Icon(

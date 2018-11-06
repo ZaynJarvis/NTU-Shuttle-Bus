@@ -21,7 +21,7 @@ class BusIconButton extends StatelessWidget {
     if (bus.isText)
       content = LayoutBuilder(builder: (context, constraint) {
         return Text(
-          bus.id,
+          bus.name,
           style: TextStyle(
             fontSize: DefaultTextStyle.of(context).style.fontSize * 2,
             color: bus.color,

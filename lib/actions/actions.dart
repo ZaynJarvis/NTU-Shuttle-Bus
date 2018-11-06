@@ -10,3 +10,10 @@ class GetBusesLocationAction {
   final List<BusLocation> busesLocation;
   GetBusesLocationAction(this.busesLocation);
 }
+
+class UpdateBusLocationRequest {}
+
+class UpdateBusLocationResponse {
+  List<BusLocation> busesLocation;
+  UpdateBusLocationResponse({this.busesLocation});
+}
