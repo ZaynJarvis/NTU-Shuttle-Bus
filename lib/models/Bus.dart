@@ -13,4 +13,16 @@ class Bus {
       this.id,
       this.isText = false,
       this.callback});
+  @override
+  String toString() {
+    return "Bus: $id";
+  }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is Bus && runtimeType == other.runtimeType && id == other.id;
+
+  @override
+  int get hashCode => id.hashCode;
 }

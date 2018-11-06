@@ -13,14 +13,42 @@ class BusIconButton extends StatelessWidget {
     @required this.bus,
   });
 
-  Widget switchIcon(List<Bus> buses) {
-    Color iconColor = bus.secondaryColor;
-    if (buses != null && buses.contains(bus)) iconColor = bus.color;
-    if (bus.isText) return Text(bus.id);
-    return Icon(
-      Icons.directions_bus,
-      color: iconColor,
-      size: 40.0,
+  Widget switchIcon(_ViewModel vm) {
+    Widget content;
+    Color borderColor = Colors.grey;
+    vm.buses.contains(bus);
+    if (vm.buses != null && vm.buses.contains(bus)) borderColor = Colors.green;
+    if (bus.isText)
+      content = LayoutBuilder(builder: (context, constraint) {
+        return Text(
+          bus.id,
+          style: TextStyle(
+            fontSize: DefaultTextStyle.of(context).style.fontSize * 2,
+            color: bus.color,
+          ),
+        );
+      });
+    else
+      content = LayoutBuilder(builder: (ctx, constraint) {
+        return Icon(
+          Icons.directions_bus,
+          color: bus.color,
+          size: IconTheme.of(ctx).size * 2,
+        );
+      });
+    return Container(
+      height: 30.0,
+      padding: EdgeInsets.all(3.0),
+      decoration: BoxDecoration(
+        border: Border.all(width: 2.0, color: borderColor),
+        shape: BoxShape.circle,
+      ),
+      child: Center(
+        child: GestureDetector(
+          child: content,
+          onTap: () => vm.callback(bus),
+        ),
+      ),
     );
   }
 
@@ -29,12 +57,8 @@ class BusIconButton extends StatelessWidget {
     return StoreConnector<AppState, _ViewModel>(
       converter: _ViewModel.fromStore,
       builder: (BuildContext context, _ViewModel vm) => Container(
-            child: InkWell(
-              child: switchIcon(vm.buses),
-              splashColor: Colors.black,
-              onTap: () => vm.callback(bus),
-              highlightColor: Colors.black,
-            ),
+            padding: EdgeInsets.all(5.0),
+            child: switchIcon(vm),
           ),
     );
   }
