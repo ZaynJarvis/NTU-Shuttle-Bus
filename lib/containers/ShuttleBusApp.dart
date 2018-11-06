@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:bus/components/SchoolMap.dart';
+import 'package:bus/containers/SchoolMap.dart';
 import 'package:bus/components/BusIconMenu.dart';
 
 class ShuttleBusApp extends StatelessWidget {

@@ -88,6 +88,13 @@ class SchoolMap extends StatelessWidget {
                 MarkerLayerOptions(
                   markers: _buildMarkers(state),
                 ),
+                PolylineLayerOptions(polylines: [
+                  Polyline(points: [
+                    LatLng(1.347670, 103.683328),
+                    LatLng(1.347670, 103.684328),
+                    LatLng(1.343670, 103.683328),
+                  ])
+                ])
               ],
             );
           else
