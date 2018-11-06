@@ -1,5 +1,5 @@
 import 'package:redux/redux.dart';
-import 'package:bus/models/Appstate.dart';
+import 'package:bus/models/AppState.dart';
 import 'package:bus/models/BusLocation.dart';
 import 'dart:async';
 import 'dart:convert';
@@ -30,16 +30,12 @@ Future<List<BusLocation>> _updateBusLocation(bus) async {
       return [
         BusLocation(
             bus: bus,
-            latitude: buses[0]['NextBus']['Latitude'],
-            longitude: buses[0]['NextBus']['Longitude']),
+            latitude: double.parse(buses[0]['NextBus']['Latitude'] ?? '0'),
+            longitude: double.parse(buses[0]['NextBus']['Longitude'] ?? '0')),
         BusLocation(
             bus: bus,
-            latitude: buses[0]['NextBus2']['Latitude'],
-            longitude: buses[0]['NextBus']['Longitude']),
-        BusLocation(
-            bus: bus,
-            latitude: buses[0]['NextBus3']['Latitude'],
-            longitude: buses[0]['NextBus']['Longitude']),
+            latitude: double.parse(buses[0]['NextBus2']['Latitude'] ?? '0'),
+            longitude: double.parse(buses[0]['NextBus2']['Longitude'] ?? '0')),
       ];
     }
   } else {
@@ -48,24 +44,27 @@ Future<List<BusLocation>> _updateBusLocation(bus) async {
     if (buses.isNotEmpty) {
       return buses
           .map((busItem) => BusLocation(
-              bus: bus, latitude: busItem['lat'], longitude: busItem['lon']))
+              bus: bus,
+              latitude: double.parse(busItem['lat']),
+              longitude: double.parse(busItem['lon'])))
           .toList();
     }
   }
-  return [];
+  return null;
 }
 
 Middleware<AppState> _updateBusLocationMiddleware() {
-  Future<List<BusLocation>> _getAllBuses() async {
-    List result = [];
-    Future.forEach(busList, (bus) async {
-      result.add(_updateBusLocation(bus));
+  Future<List<BusLocation>> _updateAllBuses() async {
+    List<BusLocation> result = [];
+    await Future.forEach(busList, (bus) async {
+      List<BusLocation> busLocation = await _updateBusLocation(bus);
+      if (busLocation != null) result.addAll(busLocation);
     });
     return result;
   }
 
   return (Store<AppState> store, action, NextDispatcher next) {
-    _getAllBuses().then((response) =>
+    _updateAllBuses().then((response) =>
         store.dispatch(UpdateBusLocationResponse(busesLocation: response)));
     next(action);
   };

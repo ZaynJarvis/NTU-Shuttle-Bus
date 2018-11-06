@@ -17,7 +17,7 @@ class Bus {
       this.callback});
   @override
   String toString() {
-    return "Bus: $id";
+    return "Bus: $id => $name";
   }
 
   @override

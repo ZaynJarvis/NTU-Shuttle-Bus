@@ -6,4 +6,8 @@ class BusLocation {
   double latitude;
   double longitude;
   BusLocation({this.bus, this.latitude, this.longitude});
+  @override
+  String toString() {
+    return "Bus: $bus at ($latitude, $longitude)";
+  }
 }

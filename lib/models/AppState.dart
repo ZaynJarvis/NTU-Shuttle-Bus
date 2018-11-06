@@ -15,6 +15,7 @@ class AppState {
   static AppState init() {
     return AppState(
       buses: [busList[0]],
+      busesLocation: null,
     );
   }
 
@@ -27,4 +28,15 @@ class AppState {
       busesLocation: busesLocation ?? this.busesLocation,
     );
   }
+
+  @override
+  int get hashCode => buses.hashCode ^ busesLocation.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is AppState &&
+          runtimeType == other.runtimeType &&
+          buses == this.buses &&
+          busesLocation == this.busesLocation;
 }

@@ -79,6 +79,7 @@ class _ViewModel {
         store.dispatch(UpdateBusAction(
           bus,
         ));
+        store.dispatch(UpdateBusLocationRequest());
       },
       buses: store.state.buses,
     );
