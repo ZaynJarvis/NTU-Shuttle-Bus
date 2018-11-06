@@ -1,8 +1,10 @@
 import 'package:redux/redux.dart';
 import 'package:bus/models/AppState.dart';
 import 'package:bus/models/BusLocation.dart';
+import 'package:bus/models/User.dart';
 import 'dart:async';
 import 'dart:convert';
+import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
 import 'package:bus/env.dart';
 import 'package:bus/actions/actions.dart';
@@ -10,9 +12,12 @@ import 'package:bus/assets/busList.dart';
 
 List<Middleware<AppState>> createStoreMiddleware() {
   final updateBusLocationMiddleware = _updateBusLocationMiddleware();
+  final updateUserLocationMiddleware = _updateUserLocationMiddleware();
   return [
     TypedMiddleware<AppState, UpdateBusLocationRequest>(
         updateBusLocationMiddleware),
+    TypedMiddleware<AppState, UpdateUserLocationRequest>(
+        updateUserLocationMiddleware),
   ];
 }
 
@@ -66,6 +71,23 @@ Middleware<AppState> _updateBusLocationMiddleware() {
   return (Store<AppState> store, action, NextDispatcher next) {
     _updateAllBuses().then((response) =>
         store.dispatch(UpdateBusLocationResponse(busesLocation: response)));
+    next(action);
+  };
+}
+
+Middleware<AppState> _updateUserLocationMiddleware() {
+  Future<User> _getUserLocation() async {
+    Position user = await Geolocator().getLastKnownPosition(
+        desiredAccuracy: LocationAccuracy.bestForNavigation);
+    return User(
+      latitude: user.latitude,
+      longitude: user.longitude,
+    );
+  }
+
+  return (Store<AppState> store, action, NextDispatcher next) {
+    _getUserLocation().then((response) =>
+        store.dispatch(UpdateUserLocationResponse(user: response)));
     next(action);
   };
 }

@@ -1,4 +1,5 @@
 import 'package:bus/models/Bus.dart';
+import 'package:bus/models/User.dart';
 import 'package:bus/models/BusLocation.dart';
 
 class UpdateBusAction {
@@ -16,4 +17,11 @@ class UpdateBusLocationRequest {}
 class UpdateBusLocationResponse {
   List<BusLocation> busesLocation;
   UpdateBusLocationResponse({this.busesLocation});
+}
+
+class UpdateUserLocationRequest {}
+
+class UpdateUserLocationResponse {
+  User user;
+  UpdateUserLocationResponse({this.user});
 }
