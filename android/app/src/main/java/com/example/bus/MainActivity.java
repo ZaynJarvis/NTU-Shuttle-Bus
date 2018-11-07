@@ -1,4 +1,4 @@
-package com.example.bus;
+package com.zaynjarvis.bus;
 
 import android.os.Bundle;
 import io.flutter.app.FlutterActivity;
