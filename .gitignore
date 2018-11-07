@@ -75,3 +75,4 @@ lib/env.dart
 
 # node_modeles
 server/node_modules
+lib/firbase/FB_reference.dart
