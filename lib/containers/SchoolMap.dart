@@ -10,6 +10,7 @@ import 'package:redux/redux.dart';
 import 'package:bus/models/AppState.dart';
 import 'package:bus/models/BusLocation.dart';
 import 'package:bus/components/LoadingPage.dart';
+import 'package:bus/components/MarkerIcon.dart';
 
 class SchoolMap extends StatelessWidget {
   List<Marker> _buildMarkers(AppState state) {
@@ -30,12 +31,9 @@ class SchoolMap extends StatelessWidget {
                     locationItem?.latitude ?? 0.0,
                     locationItem?.longitude ?? 0.0,
                   ),
-                  builder: (ctx) => Container(
-                        child: Icon(
-                          Icons.pets,
-                          size: 15.0,
-                          color: locationItem.bus.color,
-                        ),
+                  builder: (ctx) => MarkerIcon(
+                        color: locationItem.bus.color,
+                        rotate: 1,
                       ),
                 ),
           )
@@ -48,12 +46,9 @@ class SchoolMap extends StatelessWidget {
           state.user?.latitude ?? 0.0,
           state.user?.longitude ?? 0.0,
         ),
-        builder: (ctx) => Container(
-              child: Icon(
-                Icons.person_pin_circle,
-                size: 15.0,
-                color: Colors.white,
-              ),
+        builder: (ctx) => MarkerIcon(
+              color: Colors.white,
+              object: 'user',
             ),
       ));
     return busResult;
