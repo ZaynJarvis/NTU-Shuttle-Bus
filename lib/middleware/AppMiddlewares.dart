@@ -97,8 +97,8 @@ Middleware<AppState> _updateUserLocationMiddleware() {
     Position user = await Geolocator().getLastKnownPosition(
         desiredAccuracy: LocationAccuracy.bestForNavigation);
     return User(
-      latitude: user.latitude,
-      longitude: user.longitude,
+      latitude: user?.latitude,
+      longitude: user?.longitude,
     );
   }
 
