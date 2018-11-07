@@ -12,6 +12,8 @@ dependencies:
   flutter_redux: "^0.5.2"
   cupertino_icons: ^0.1.2
   geolocator: "^2.1.0"
+  firebase_analytics: ^0.3.3
+  firebase_database: ^1.0.5
 
 dev_dependencies:
   flutter_test:
