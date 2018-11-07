@@ -1,0 +1,62 @@
+{
+  "project_info": {
+    "project_number": "22598474080",
+    "firebase_url": "https://ntu-shuttle-bus.firebaseio.com",
+    "project_id": "ntu-shuttle-bus",
+    "storage_bucket": "ntu-shuttle-bus.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:22598474080:android:5bde7aaf652c6be9",
+        "android_client_info": {
+          "package_name": "com.zaynjarvis.bus"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "22598474080-7uid1ttsksveognrcdcn01uhpskj6u01.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.zaynjarvis.bus",
+            "certificate_hash": "414c7fe6d292ef0fa8a5edab222bc2dae6e299fb"
+          }
+        },
+        {
+          "client_id": "22598474080-7t3p79t6dkalo9h0drr0vbvrfg2etsva.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAQt97ncjgBGiz5TTinH-u5oAqQAVIJl3c"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "22598474080-7t3p79t6dkalo9h0drr0vbvrfg2etsva.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "22598474080-jehqa5906l1eri1d3po2akuuv2gn0mfp.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.zaynjarvis.bus"
+              }
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

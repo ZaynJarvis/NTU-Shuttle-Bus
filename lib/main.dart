@@ -5,8 +5,10 @@ import 'package:bus/middleware/AppMiddlewares.dart';
 import 'package:bus/models/AppState.dart';
 import 'package:bus/reducers/AppReducer.dart';
 import 'package:bus/containers/ShuttleBusApp.dart';
+import 'package:bus/firbase/Firebase.dart';
 
 void main() {
+  func();
   AppState state = AppState.init();
   final store = Store<AppState>(appReducer,
       initialState: state, middleware: createStoreMiddleware());

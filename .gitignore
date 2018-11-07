@@ -73,4 +73,5 @@ build/
 # env file
 lib/env.dart
 
-./server/node_modules
+# node_modeles
+server/node_modules
