@@ -23,8 +23,8 @@ class Bus {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is Bus && runtimeType == other.runtimeType && id == other.id;
+      other is Bus && runtimeType == other.runtimeType && name == other.name;
 
   @override
-  int get hashCode => id.hashCode;
+  int get hashCode => name.hashCode;
 }

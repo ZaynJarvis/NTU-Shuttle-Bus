@@ -12,9 +12,15 @@ final List<Bus> busList = [
       secondaryColor: Colors.grey[400],
       isText: true),
   Bus(
+      id: "27261",
+      name: "179A",
+      color: Colors.limeAccent,
+      secondaryColor: Colors.grey[400],
+      isText: true),
+  Bus(
       id: "27199",
       name: "199",
-      color: Colors.limeAccent,
+      color: Colors.amberAccent,
       secondaryColor: Colors.grey[400],
       isText: true),
   Bus(

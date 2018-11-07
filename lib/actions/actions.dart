@@ -12,6 +12,8 @@ class GetBusesLocationAction {
   GetBusesLocationAction(this.busesLocation);
 }
 
+class InitBusLocationRequest {}
+
 class UpdateBusLocationRequest {}
 
 class UpdateBusLocationResponse {

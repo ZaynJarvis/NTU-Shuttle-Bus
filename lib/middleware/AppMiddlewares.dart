@@ -1,6 +1,7 @@
 import 'package:redux/redux.dart';
 import 'package:bus/models/AppState.dart';
 import 'package:bus/models/BusLocation.dart';
+import 'package:bus/models/Bus.dart';
 import 'package:bus/models/User.dart';
 import 'dart:async';
 import 'dart:convert';
@@ -11,11 +12,14 @@ import 'package:bus/actions/actions.dart';
 import 'package:bus/assets/busList.dart';
 
 List<Middleware<AppState>> createStoreMiddleware() {
-  final updateBusLocationMiddleware = _updateBusLocationMiddleware();
   final updateUserLocationMiddleware = _updateUserLocationMiddleware();
+  final updateBusLocationMiddleware = _updateBusLocationMiddleware();
+  final initBusLocationMiddleware = _initBusLocationMiddleware();
   return [
     TypedMiddleware<AppState, UpdateBusLocationRequest>(
         updateBusLocationMiddleware),
+    TypedMiddleware<AppState, InitBusLocationRequest>(
+        initBusLocationMiddleware),
     TypedMiddleware<AppState, UpdateUserLocationRequest>(
         updateUserLocationMiddleware),
   ];
@@ -58,18 +62,31 @@ Future<List<BusLocation>> _updateBusLocation(bus) async {
   return null;
 }
 
-Middleware<AppState> _updateBusLocationMiddleware() {
+Middleware<AppState> _initBusLocationMiddleware() {
   Future<List<BusLocation>> _updateAllBuses() async {
     List<BusLocation> result = [];
-    await Future.forEach(busList, (bus) async {
-      List<BusLocation> busLocation = await _updateBusLocation(bus);
-      if (busLocation != null) result.addAll(busLocation);
-    });
+    List<BusLocation> busLocation = await _updateBusLocation(busList[0]);
+    if (busLocation != null) result.addAll(busLocation);
     return result;
   }
 
   return (Store<AppState> store, action, NextDispatcher next) {
     _updateAllBuses().then((response) =>
+        store.dispatch(UpdateBusLocationResponse(busesLocation: response)));
+    next(action);
+  };
+}
+
+Middleware<AppState> _updateBusLocationMiddleware() {
+  Stream<List<BusLocation>> _updateAllBuses() async* {
+    for (Bus busItem in busList) {
+      List<BusLocation> busLocation = await _updateBusLocation(busItem);
+      yield busLocation;
+    }
+  }
+
+  return (Store<AppState> store, action, NextDispatcher next) {
+    _updateAllBuses().listen((response) =>
         store.dispatch(UpdateBusLocationResponse(busesLocation: response)));
     next(action);
   };

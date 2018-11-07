@@ -16,17 +16,15 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  flutter_launcher_icons: "^0.6.1"
 
 flutter:
   uses-material-design: true
-  # fonts:
-  #   - family: Schyler
-  #     fonts:
-  #       - asset: fonts/Schyler-Regular.ttf
-  #       - asset: fonts/Schyler-Italic.ttf
-  #         style: italic
-  #   - family: Trajan Pro
-  #     fonts:
-  #       - asset: fonts/TrajanPro.ttf
-  #       - asset: fonts/TrajanPro_Bold.ttf
-  #         weight: 700
+  assets:
+    - lib/assets/bus_icon.png
+
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "lib/assets/bus_icon.png"
+  adaptive_icon_background: "#FFFFFF00"

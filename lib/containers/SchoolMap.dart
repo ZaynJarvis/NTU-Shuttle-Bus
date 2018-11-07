@@ -9,6 +9,7 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
 import 'package:bus/models/AppState.dart';
 import 'package:bus/models/BusLocation.dart';
+import 'package:bus/components/LoadingPage.dart';
 
 class SchoolMap extends StatelessWidget {
   List<Marker> _buildMarkers(AppState state) {
@@ -58,47 +59,55 @@ class SchoolMap extends StatelessWidget {
     return busResult;
   }
 
+  Widget _showLoading(busesLocation, ctx) {
+    if (busesLocation == null) return LoadingPage();
+    return Container(width: 0.0, height: 0.0);
+  }
+
   @override
   Widget build(BuildContext context) {
     return StoreConnector<AppState, AppState>(
-        onInit: (store) => Timer.periodic(
-              Duration(seconds: 10),
-              (t) {
-                store.dispatch(UpdateBusLocationRequest());
-                store.dispatch(UpdateUserLocationRequest());
-              },
-            ),
+        onInit: (store) {
+          store.dispatch(UpdateBusLocationRequest());
+          store.dispatch(UpdateUserLocationRequest());
+          Timer.periodic(
+            Duration(seconds: 10),
+            (t) {
+              store.dispatch(UpdateBusLocationRequest());
+              store.dispatch(UpdateUserLocationRequest());
+            },
+          );
+        },
         converter: (Store<AppState> store) => store.state,
         builder: (BuildContext context, AppState state) {
-          if (state.busesLocation != null)
-            return FlutterMap(
-              options: MapOptions(
-                center: LatLng(1.347670, 103.683328),
-                zoom: 15.0,
+          return Stack(
+            children: <Widget>[
+              FlutterMap(
+                options: MapOptions(
+                  center: LatLng(1.347670, 103.683328),
+                  zoom: 15.0,
+                  minZoom: 15.0,
+                  maxZoom: 15.0,
+                  interactive: false,
+                ),
+                layers: [
+                  TileLayerOptions(
+                    urlTemplate: "https://api.tiles.mapbox.com/v4/"
+                        "{id}/{z}/{x}/{y}@2x.png?access_token={accessToken}",
+                    additionalOptions: {
+                      'accessToken': '$MAPBOX_TOKEN',
+                      'id': 'mapbox.dark',
+                    },
+                  ),
+                  MarkerLayerOptions(
+                    markers: _buildMarkers(state),
+                  ),
+                  PolylineLayerOptions(polylines: [Polyline(points: [])])
+                ],
               ),
-              layers: [
-                TileLayerOptions(
-                  urlTemplate: "https://api.tiles.mapbox.com/v4/"
-                      "{id}/{z}/{x}/{y}@2x.png?access_token={accessToken}",
-                  additionalOptions: {
-                    'accessToken': '$MAPBOX_TOKEN',
-                    'id': 'mapbox.dark',
-                  },
-                ),
-                MarkerLayerOptions(
-                  markers: _buildMarkers(state),
-                ),
-                PolylineLayerOptions(polylines: [
-                  Polyline(points: [
-                    LatLng(1.347670, 103.683328),
-                    LatLng(1.347670, 103.684328),
-                    LatLng(1.343670, 103.683328),
-                  ])
-                ])
-              ],
-            );
-          else
-            return Center(child: CircularProgressIndicator());
+              _showLoading(state.busesLocation, context),
+            ],
+          );
         });
   }
 }

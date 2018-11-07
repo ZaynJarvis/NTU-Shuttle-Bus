@@ -20,24 +20,29 @@ class BusIconButton extends StatelessWidget {
     if (vm.buses != null && vm.buses.contains(bus)) borderColor = Colors.green;
     if (bus.isText)
       content = LayoutBuilder(builder: (context, constraint) {
-        return Text(
-          bus.name,
-          style: TextStyle(
-            fontSize: DefaultTextStyle.of(context).style.fontSize * 2,
-            color: bus.color,
+        return SizedBox.expand(
+          child: Center(
+            child: Text(
+              bus.name,
+              style: TextStyle(
+                // fontSize: DefaultTextStyle.of(context).style.fontSize * 1.5,
+                color: bus.color,
+              ),
+            ),
           ),
         );
       });
     else
       content = LayoutBuilder(builder: (ctx, constraint) {
-        return Icon(
-          Icons.directions_bus,
-          color: bus.color,
-          size: IconTheme.of(ctx).size * 2,
+        return SizedBox.expand(
+          child: Icon(
+            Icons.directions_bus,
+            color: bus.color,
+            // size: IconTheme.of(ctx).size * 1.5,
+          ),
         );
       });
     return Container(
-      height: 30.0,
       padding: EdgeInsets.all(3.0),
       decoration: BoxDecoration(
         border: Border.all(width: 2.0, color: borderColor),

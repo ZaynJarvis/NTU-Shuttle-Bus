@@ -8,6 +8,16 @@ final updateBusesLocationReducer = combineReducers<List<BusLocation>>([
 ]);
 
 List<BusLocation> _updateBusesLocationReducer(
-    List<BusLocation> buses, UpdateBusLocationResponse action) {
+    List<BusLocation> busesLocation, UpdateBusLocationResponse action) {
+  if (busesLocation != null && busesLocation.isNotEmpty) {
+    if (action.busesLocation != null && action.busesLocation.isNotEmpty) {
+      busesLocation = busesLocation
+          .where(
+              (busLocation) => busLocation.bus != action.busesLocation[0].bus)
+          .toList();
+      return busesLocation..addAll(action.busesLocation);
+    }
+    return busesLocation;
+  }
   return action.busesLocation;
 }
