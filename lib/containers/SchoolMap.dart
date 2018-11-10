@@ -33,7 +33,7 @@ class SchoolMap extends StatelessWidget {
                   ),
                   builder: (ctx) => MarkerIcon(
                         color: locationItem.bus.color,
-                        rotate: 1,
+                        rotate: locationItem.direction,
                       ),
                 ),
           )
@@ -66,9 +66,8 @@ class SchoolMap extends StatelessWidget {
           store.dispatch(UpdateBusLocationRequest());
           store.dispatch(UpdateUserLocationRequest());
           Timer.periodic(
-            Duration(seconds: 10),
+            Duration(seconds: 1),
             (t) {
-              store.dispatch(UpdateBusLocationRequest());
               store.dispatch(UpdateUserLocationRequest());
             },
           );
