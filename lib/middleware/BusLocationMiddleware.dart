@@ -8,7 +8,6 @@ import 'package:bus/models/BusLocation.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 Middleware<AppState> updateBusLocationMiddleware() {
-  print(1);
   return (Store<AppState> store, action, NextDispatcher next) {
     for (Bus busItem in busList) {
       Firestore.instance.collection(busItem.name).snapshots().listen((data) {
@@ -20,7 +19,6 @@ Middleware<AppState> updateBusLocationMiddleware() {
                   longitude: fbBus['longitude'],
                 ))
             .toList();
-        print(busesLocation);
         store.dispatch(UpdateBusLocationResponse(busesLocation: busesLocation));
       });
     }
